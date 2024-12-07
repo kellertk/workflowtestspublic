@@ -17,4 +17,5 @@ jobs:
                 git config user.name "GitHub Actions"
                 git config user.email "tom@github.com"
                 git remote set-url origin https://${{ secrets.TOMTOKEN }}@github.com/awslabs/aws-github-test.git
+                git config --unset credential.helper
                 git push origin HEAD:testbranch
