@@ -1,0 +1,18 @@
+name: Test
+description: Test
+
+inputs:
+  num1:
+    description: 'one'
+    required: true
+  num2:
+    description: 'two'
+    required: false
+    default: 42
+  num3:
+    description: 'three'
+    required: false
+
+runs:
+  using: 'node20'
+  main: 'test.js'
