@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
         issues: write
+        pull-requests: write
     steps:
-      - uses: aws-actions/closed-issue-message@refactor
+      - uses: aws-actions/closed-issue-message@refactoragain
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
