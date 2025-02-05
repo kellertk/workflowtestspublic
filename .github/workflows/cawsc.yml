@@ -14,7 +14,7 @@ jobs:
         with:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::570774169190:role/testOIDC-Role-ZKGEP6WFYGSY
-          role-duration-seconds: 60
+          role-duration-seconds: 900
           role-session-name: TestCAWSC
       - name: Whoami
         run: |
