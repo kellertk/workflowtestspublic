@@ -13,7 +13,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@main
         with:
           aws-region: us-west-2
-          role-to-assume: arn:aws:iam::570774169190:role/testOIDC-Role-ZKGEP6WFYGSY
+          role-to-assume: ${{ secrets.role }}
           role-duration-seconds: 900
           role-session-name: TestCAWSC
       - name: Whoami
