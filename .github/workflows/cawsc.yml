@@ -5,6 +5,9 @@ on:
 jobs:
   cawsc:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: CAWSC
         uses: aws-actions/configure-aws-credentials@main
