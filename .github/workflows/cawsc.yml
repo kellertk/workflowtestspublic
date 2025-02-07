@@ -9,7 +9,7 @@ jobs:
       id-token: write
     steps:
       - name: CAWSC
-        if: ${{ env.AWS_ACCESS_KEY_ID == "" }}
+        if: ${{ env.AWS_ACCESS_KEY_ID == '' }}
         uses: aws-actions/configure-aws-credentials@main
         with:
           aws-region: us-west-2
