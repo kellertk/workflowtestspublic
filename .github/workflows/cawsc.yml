@@ -1,4 +1,4 @@
-name: Test Configure AWS Credential
+name: cawsc
 on:
   workflow_dispatch:
 
@@ -14,6 +14,7 @@ jobs:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
           role-duration-seconds: 900
+          max-retries: 1
           role-session-name: TestCAWSC
       - name: Whoami
         run: |
