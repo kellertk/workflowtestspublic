@@ -7,7 +7,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: CAWSC
-        uses: aws-actions/configure-aws-credentials@v4.1.0
+        uses: aws-actions/configure-aws-credentials@v4.2.0
         with:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
