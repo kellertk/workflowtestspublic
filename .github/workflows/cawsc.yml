@@ -4,16 +4,15 @@ on:
 
 jobs:
   cawsc:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       id-token: write
     steps:
       - name: CAWSC
-        if: ${{ env.AWS_ACCESS_KEY_ID == '' }}
-        uses: aws-actions/configure-aws-credentials@main
+        uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
           aws-region: us-west-2
-          role-to-assume: arn:aws:iam::206735643321:role/ConfigureAwsCredentialsPackageRole
+          role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
           role-duration-seconds: 900
           role-session-name: TestCAWSC
       - name: Whoami
