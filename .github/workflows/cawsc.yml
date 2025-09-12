@@ -11,7 +11,7 @@ jobs:
     runs-on: arc-runner-set
     steps:
       - name: CAWSC
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@kellertk/eks-pod
         with:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
