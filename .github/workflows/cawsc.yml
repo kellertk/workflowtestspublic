@@ -18,6 +18,7 @@ jobs:
           role-duration-seconds: 900
           retry-max-attempts: 1
           role-session-name: TestCAWSC
+          force-skip-oidc: true
       - name: Whoami
         run: |
           aws sts get-caller-identity
