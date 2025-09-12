@@ -4,10 +4,10 @@ on:
 
 jobs:
   cawsc:
-    runs-on: self-hosted
+    runs-on: arc-runner-set
     steps:
       - name: CAWSC
-        uses: aws-actions/configure-aws-credentials@v4.3.1
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
