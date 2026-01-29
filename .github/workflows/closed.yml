@@ -18,7 +18,7 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            label: 'needs-triage'
+            name: 'needs-triage'
           })      
   auto_comment:
     runs-on: ubuntu-latest
