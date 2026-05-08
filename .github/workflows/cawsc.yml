@@ -43,7 +43,7 @@ jobs:
           aws-access-key-id: ${{ steps.create-key.outputs.STATIC_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ steps.create-key.outputs.STATIC_SECRET_ACCESS_KEY }}
           disable-retry: false
-          retry-max-attempts: 10
+          retry-max-attempts: 20
 
       - name: check account
         run: aws sts get-caller-identity
