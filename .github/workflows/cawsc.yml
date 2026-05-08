@@ -39,7 +39,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@kellertk/retry-logic-with-dist-DO-NOT-MERGE
         with:
           aws-region: us-west-2
-          role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
+          role-to-assume: arn:aws:iam::570774169190:role/cawsc-static-test-target-role
           aws-access-key-id: ${{ steps.create-key.outputs.STATIC_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ steps.create-key.outputs.STATIC_SECRET_ACCESS_KEY }}
           disable-retry: false
