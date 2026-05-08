@@ -1,24 +1,63 @@
-name: cawsc
-on:
-  workflow_dispatch:
-
-permissions:
-  id-token: write
-  contents: read
+name: cawsc - static creds retry test
+on: workflow_dispatch
 
 jobs:
-  cawsc:
-    runs-on: arc-runner-set
+  static_assumeRole:
+    permissions:
+      id-token: write
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    name: Static IAM creds test (${{ matrix.os }})
     steps:
-      - name: CAWSC
-        uses: aws-actions/configure-aws-credentials@kellertk/eks-pod
+      - name: assume creator Role
+        uses: aws-actions/configure-aws-credentials@kellertk/retry-logic-with-dist-DO-NOT-MERGE
         with:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
           role-duration-seconds: 900
-          retry-max-attempts: 1
           role-session-name: TestCAWSC
-          force-skip-oidc: true
-      - name: Whoami
+
+      - name: create and mask access key
+        id: create-key
         run: |
-          aws sts get-caller-identity
+          AK_OUTPUT=$(aws iam create-access-key --user-name integ-test-static-user-${{ runner.os }})
+          AK_ID=$(echo $AK_OUTPUT | jq -r '.AccessKey.AccessKeyId')
+          SECRET_AK=$(echo $AK_OUTPUT | jq -r '.AccessKey.SecretAccessKey')
+          echo "::add-mask::$AK_ID"
+          echo "::add-mask::$SECRET_AK"
+          echo "STATIC_ACCESS_KEY_ID=$AK_ID" >> $GITHUB_OUTPUT
+          echo "STATIC_SECRET_ACCESS_KEY=$SECRET_AK" >> $GITHUB_OUTPUT
+
+      - name: assume role with static creds
+        uses: aws-actions/configure-aws-credentials@kellertk/retry-logic-with-dist-DO-NOT-MERGE
+        with:
+          aws-region: us-west-2
+          role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
+          aws-access-key-id: ${{ steps.create-key.outputs.STATIC_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ steps.create-key.outputs.STATIC_SECRET_ACCESS_KEY }}
+          disable-retry: false
+          retry-max-attempts: 10
+
+      - name: check account
+        run: aws sts get-caller-identity
+
+      - name: log back into creator role
+        if: success() || failure()
+        uses: aws-actions/configure-aws-credentials@kellertk/retry-logic-with-dist-DO-NOT-MERGE
+        with:
+          aws-region: us-west-2
+          role-to-assume: arn:aws:iam::570774169190:role/Configure-aws-credentials-kellertk-Role-1VNIWSPQGBBTG
+          role-duration-seconds: 900
+          role-session-name: TestCAWSC
+
+      - name: delete access key
+        if: success() || failure()
+        run: |
+          aws iam delete-access-key --user-name integ-test-static-user-${{ runner.os }} --access-key-id ${{ steps.create-key.outputs.STATIC_ACCESS_KEY_ID }}
